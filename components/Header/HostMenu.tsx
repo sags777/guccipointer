@@ -77,9 +77,11 @@ function HostMenu() {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (userId: string) => {
-    setHost(userId);
-    setAnchorEl(null);
+  const handleMenuItemClick = (userId?: string) => {
+    if (userId){
+      setHost(userId);
+      setAnchorEl(null);
+    }
   };
 
   const sessionInfo = getSessionInfo();
