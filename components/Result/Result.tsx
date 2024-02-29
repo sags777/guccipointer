@@ -3,10 +3,12 @@ import { useStore } from "@/store/StoreProvider/StoreProvider";
 import withStore from "@/store/StoreProvider/withStore";
 import {
   calculateAveragePoints,
+  checkForConsensus,
   createResultData,
   findMostCommonPoint,
 } from "@/utilities/commonUtils";
 import {
+  Alert,
   Box,
   Chip,
   Table,
@@ -19,6 +21,7 @@ import {
   styled,
 } from "@mui/material";
 import React from "react";
+import Confetti from "react-confetti";
 
 const ResultContainer = styled(Box)(() => {
   return {
@@ -71,6 +74,15 @@ const PointsChip = styled(Chip)(() => ({
   height: "20px",
 }));
 
+const ConsensusTitle = styled(Alert)(() => ({
+  color: "#2e7d32",
+  fontWeight: "bold",
+  fontSize: "25px",
+  justifyContent: "inherit",
+  height: "35px",
+  alignItems: "center",
+}));
+
 function Result() {
   const store = useStore();
   const { voterData, votesHidden } = store.mainStore.getStore();
@@ -78,6 +90,7 @@ function Result() {
   const averagePoints = calculateAveragePoints(voterData);
   const mostCommonPoint = findMostCommonPoint(voterData);
   const resultData = createResultData(voterData);
+  const isConsensus = checkForConsensus(voterData);
 
   const { isFloating } = usePathValidate();
 
@@ -87,8 +100,12 @@ function Result() {
 
   return (
     <ResultContainer>
+      { isConsensus && <Confetti /> }
       <TitleAlert>
-        <Typography variant="h5">Results</Typography>
+        { isConsensus ? 
+          <ConsensusTitle icon>Consensus!!!</ConsensusTitle> :
+          <Typography textAlign="center" variant="h5">Results</Typography>
+        }
       </TitleAlert>
       <Typography variant="subtitle1">
         Average Points: <PointsChip color="info" label={averagePoints} />

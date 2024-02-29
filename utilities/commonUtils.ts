@@ -29,13 +29,11 @@ export const setUserSession = (user: SessionInfo): void => {
   }
 };
 
-// Calculate average points
 export const calculateAveragePoints = (votersData: User[]) => {
   const totalPoints = votersData.reduce((acc, user) => acc + (user.points ? parseFloat(user.points) : 0), 0);
   return votersData.length > 0 ? (totalPoints / votersData.length).toFixed(2) : '0';
 };
 
-// Find the most common point
 export const findMostCommonPoint = (votersData: User[]) => {
   const pointsFrequency = votersData.reduce((acc, user) => {
     if (user.points) {
@@ -45,6 +43,12 @@ export const findMostCommonPoint = (votersData: User[]) => {
   }, {} as { [key: string]: number });
 
   return Object.keys(pointsFrequency).reduce((a, b) => pointsFrequency[a] > pointsFrequency[b] ? a : b, '');
+};
+
+export const checkForConsensus = (users: User[]): boolean => {
+  if (users.length <= 1) return true;
+  const referencePoints = users[0].points;
+  return users.every(user => user.points === referencePoints);
 };
 
 export const createResultData = (data: User[]) => {
