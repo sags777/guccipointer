@@ -6,7 +6,7 @@ export function usePathValidate() {
 
   const isHomepage = router.asPath === "/" || router.route === "/rooms/[id]";
   const isFloating = router.asPath === "/floatingpointer";
-  const isSignin = !checkPointerSessionTokenExists() || router.asPath === "/" || router.asPath === "/rooms";
+  const isSignin = router.asPath === "/" || router.asPath === "/rooms";
 
   return { isHomepage, isFloating, isSignin }
 }
