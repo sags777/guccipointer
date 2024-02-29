@@ -67,7 +67,7 @@ function UserSignIn() {
 
   return (
     <>
-      <WelcomeTitle color="secondary" icon>
+      <WelcomeTitle color="success" icon>
         Gucci Pointer
       </WelcomeTitle>
       <SignInContainer>
