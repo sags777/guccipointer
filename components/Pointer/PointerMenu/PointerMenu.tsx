@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem, styled } from "@mui/material";
 import React from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useRouter } from "next/router";
+import { usePathValidate } from "@/hooks/usePathValidate";
 
 const MenuOption = styled(MenuItem)(() => {
   return {
@@ -14,8 +14,7 @@ const PointerMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const router = useRouter();
-  const isFloating = router.asPath === '/floatingpointer';
+  const { isFloating } = usePathValidate();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

@@ -17,7 +17,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useStore } from "@/store/StoreProvider/StoreProvider";
 import { getSessionInfo } from "@/utilities/commonUtils";
 import withStore from "@/store/StoreProvider/withStore";
-import { useRouter } from "next/router";
 
 const StyledMenu = styled(Menu)(() => ({
   "& .MuiPaper-root": {

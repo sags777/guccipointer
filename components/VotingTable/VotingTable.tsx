@@ -2,11 +2,11 @@ import { useStore } from '@/store/StoreProvider/StoreProvider'
 import withStore from '@/store/StoreProvider/withStore'
 import { Poll } from '@mui/icons-material'
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, styled } from '@mui/material'
-import { useRouter } from 'next/router'
 import React, { ReactNode } from 'react'
 import CheckIcon from '@mui/icons-material/Check';
 import { getSessionInfo } from '@/utilities/commonUtils'
 import { User } from '@/interfaces/User'
+import { usePathValidate } from '@/hooks/usePathValidate'
 
 const VotingTableContainer = styled(Box)(() => {
     return {
@@ -77,9 +77,7 @@ function VotingTable() {
     return renderVoterPoint(<Poll fontSize='large'/>);
   }
   
-  
-  const router = useRouter();
-  const isFloating = router.asPath === '/floatingpointer';
+  const { isFloating } = usePathValidate();
 
   if (isFloating || !votesHidden) { return null; }
 

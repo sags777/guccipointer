@@ -1,3 +1,4 @@
+import { usePathValidate } from "@/hooks/usePathValidate";
 import { useStore } from "@/store/StoreProvider/StoreProvider";
 import withStore from "@/store/StoreProvider/withStore";
 import {
@@ -17,7 +18,6 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import React from "react";
 
 const ResultContainer = styled(Box)(() => {
@@ -79,8 +79,7 @@ function Result() {
   const mostCommonPoint = findMostCommonPoint(voterData);
   const resultData = createResultData(voterData);
 
-  const router = useRouter();
-  const isFloating = router.asPath === "/floatingpointer";
+  const { isFloating } = usePathValidate();
 
   if (isFloating || votesHidden) {
     return null;

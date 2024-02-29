@@ -1,8 +1,8 @@
 import { Box, Typography, styled } from "@mui/material";
 import React from "react";
 import Pointer from "../Pointer/Pointer";
-import { useRouter } from "next/router";
 import HostMenu from "./HostMenu";
+import { usePathValidate } from "@/hooks/usePathValidate";
 
 const HeaderContainer = styled(Box)(() => {
   return {
@@ -22,8 +22,7 @@ const TitleContainer = styled(Box)(() => {
 });
 
 function Header() {
-  const router = useRouter();
-  const isHomepage = router.asPath === "/" || router.route === "/rooms/[id]";
+  const { isHomepage } = usePathValidate();
 
   return (
     <HeaderContainer>

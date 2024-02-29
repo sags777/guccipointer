@@ -1,6 +1,4 @@
-import { useStore } from '@/store/StoreProvider/StoreProvider';
 import { Button, ButtonProps, styled } from '@mui/material'
-import { useRouter } from 'next/router';
 import React from 'react'
 
 interface PointButtonProps extends ButtonProps{

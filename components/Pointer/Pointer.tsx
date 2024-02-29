@@ -3,8 +3,8 @@ import React from "react";
 import PointButton from "./PointButton/PointButton";
 import PointerMenu from "./PointerMenu/PointerMenu";
 import { useStore } from "@/store/StoreProvider/StoreProvider";
-import { useRouter } from "next/router";
 import withStore from "@/store/StoreProvider/withStore";
+import { usePathValidate } from "@/hooks/usePathValidate";
 
 const points = [
   { label: "1", value: "1" },
@@ -65,8 +65,7 @@ function Pointer() {
 
   const [selected, setSelected] = React.useState('');
 
-  const router = useRouter();
-  const isFloating = router.asPath === '/floatingpointer';
+  const { isFloating } = usePathValidate();
 
   const store = useStore();
   const { showVotes, clearVotes, setVote } =  store.mainStore.getStore();
