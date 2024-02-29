@@ -73,7 +73,6 @@ function Pointer() {
 
   const disableShowVotes = React.useMemo(() => {
     return (
-      voterData.length < 2 ||
       parseFloat(calculateAveragePoints(voterData)) === 0
     );
   }, [voterData]);

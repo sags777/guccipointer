@@ -90,7 +90,7 @@ function Result() {
   const averagePoints = calculateAveragePoints(voterData);
   const mostCommonPoint = findMostCommonPoint(voterData);
   const resultData = createResultData(voterData);
-  const isConsensus = checkForConsensus(voterData);
+  const isConsensus = checkForConsensus(voterData) && voterData.length > 1;
 
   const { isFloating } = usePathValidate();
 

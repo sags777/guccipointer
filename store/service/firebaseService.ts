@@ -10,6 +10,7 @@ import {
   push,
   update,
   get,
+  remove,
 } from "firebase/database";
 import { setUserSession } from "@/utilities/commonUtils";
 
@@ -47,9 +48,9 @@ export const firebaseActions: FirebaseActions = {
   setUser: ({ userName, points = "", roomId }: User) => {
     return new Promise(async (resolve, reject) => {
       const database = getDatabase(firebaseApp);
-  
+
       let isNewRoom = false;
-  
+
       if (!roomId) {
         const newRoomRef = push(ref(database, "rooms"));
         if (newRoomRef.key === null) {
@@ -67,10 +68,10 @@ export const firebaseActions: FirebaseActions = {
       })
         .then(async () => {
           if (roomId && userRef.key) {
-            if (isNewRoom || !await firebaseActions.getHost(roomId)) {
+            if (isNewRoom || !(await firebaseActions.getHost(roomId))) {
               firebaseActions.setHost(userRef.key, roomId);
             }
-    
+
             if (roomId && userRef.key !== null) {
               const userSession = {
                 userName: userName,
@@ -79,7 +80,7 @@ export const firebaseActions: FirebaseActions = {
               };
               setUserSession(userSession);
             }
-    
+
             resolve(roomId);
           }
         })
@@ -87,14 +88,29 @@ export const firebaseActions: FirebaseActions = {
     });
   },
 
-  setUserPoints: ({ userName, points, roomId }: User, userId: string) => {
-    const database = getDatabase(firebaseApp);
+  removeUser: async (roomId: string, userId: string) => {   
+      try {
+        const database = getDatabase(firebaseApp);
+        const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
+        await remove(userRef);    
+      } catch (error) {
+        console.error("Error removing user:", error);
+        throw error;
+      }
+  },
 
-    const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
-    set(userRef, {
-      userName: userName,
-      points: points,
-    });
+  setUserPoints: async ({ userName, points, roomId }: User, userId: string) => {
+    try {
+      const database = getDatabase(firebaseApp);
+      const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
+      set(userRef, {
+        userName: userName,
+        points: points,
+      });
+    } catch (error) {
+      console.error("Error setting user:", error);
+      throw error;
+    }
   },
 
   getData: (roomId: string, callback) => {
@@ -109,6 +125,7 @@ export const firebaseActions: FirebaseActions = {
       },
       (error) => {
         console.error("Error fetching data:", error);
+        throw error;
       }
     );
 
@@ -124,6 +141,7 @@ export const firebaseActions: FirebaseActions = {
       });
     } catch (error) {
       console.error("Failed to update showVotes:", error);
+      throw error;
     }
   },
 
@@ -141,6 +159,7 @@ export const firebaseActions: FirebaseActions = {
       });
     } catch (error) {
       console.error("Failed to update room votesHidden status:", error);
+      throw error;
     }
 
     userIds.forEach(async (userId) => {
@@ -151,6 +170,7 @@ export const firebaseActions: FirebaseActions = {
         });
       } catch (error) {
         console.error(`Failed to clear votes for user ${userId}:`, error);
+        throw error;
       }
     });
   },

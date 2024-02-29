@@ -5,8 +5,11 @@ import Header from '../Header/Header'
 import VotingTable from '../VotingTable/VotingTable'
 import dynamic from 'next/dynamic'
 import Result from '../Result/Result'
+import { useOnTabClose } from '@/hooks/useOnTabClose'
 
 function HomePage() {
+  useOnTabClose();
+  
   return (
     <>
         {!checkPointerSessionTokenExists() ? (

@@ -13,6 +13,7 @@ interface GetMainStore {
   showVotes: () => void;
   clearVotes: () => void;
   setHost: (userId: string) => void;
+  removeUser: (roomId: string, userId: string) => void;
 }
 
 class MainStore {
@@ -111,6 +112,10 @@ class MainStore {
     }
   }
 
+  removeUser = (roomId: string, userId: string) => {
+    return this.service.removeUser(roomId, userId)
+  }
+
   getStore(): GetMainStore {
     return {
       host: this.host,
@@ -120,7 +125,8 @@ class MainStore {
       getData: this.getData,
       showVotes: this.showVotes,
       clearVotes: this.clearVotes,
-      setHost: this.setHost
+      setHost: this.setHost,
+      removeUser: this.removeUser
     };
   }
 }
