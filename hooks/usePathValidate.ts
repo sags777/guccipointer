@@ -1,4 +1,3 @@
-import { checkPointerSessionTokenExists } from '@/utilities/commonUtils';
 import { useRouter } from 'next/router'
 
 export function usePathValidate() {

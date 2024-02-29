@@ -31,6 +31,7 @@ const BodyRow = styled(TableRow)(() => {
 
 const VoterName = styled(TableCell)(() => {
     return {
+        paddingLeft: "20px",
         width: '80%',
     }
 })

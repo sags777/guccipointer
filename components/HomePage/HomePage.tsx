@@ -8,7 +8,13 @@ import Result from '../Result/Result'
 import { useOnTabClose } from '@/hooks/useOnTabClose'
 
 function HomePage() {
-  useOnTabClose();
+  const setupTabCloseListener = useOnTabClose();
+
+  React.useEffect(() => {
+    const cleanupTabCloseListener = setupTabCloseListener();
+
+    return cleanupTabCloseListener;
+  }, [setupTabCloseListener]);
   
   return (
     <>
