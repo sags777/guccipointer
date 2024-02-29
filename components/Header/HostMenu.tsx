@@ -103,7 +103,6 @@ function HostMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
@@ -112,6 +111,8 @@ function HostMenu() {
           Make host
         </MenuTitle>
         <Divider />
+
+        {voterData.length < 2 && <MenuItem disabled>Empty room</MenuItem>}
 
         {voterData.map((voter, index) => {
           if (voter.userId === sessionInfo.userId) {

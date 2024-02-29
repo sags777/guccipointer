@@ -6,6 +6,7 @@ export function checkPointerSessionTokenExists() {
     const token = sessionStorage.getItem("pointerSession");
     return token !== null;
   }
+  return false;
 }
 
 export const getSessionInfo = () => {

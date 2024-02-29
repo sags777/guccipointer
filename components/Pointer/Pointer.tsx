@@ -39,36 +39,35 @@ const PointsContainer = styled(Box)(() => {
     display: "flex",
     flexDirection: "row",
     padding: "5px 5px",
-    border: '1px solid grey',
+    border: "1px solid grey",
     boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
     borderRadius: "5px",
     justifyContent: "space-between",
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   };
 });
 
 const ButtonContainer = styled(Box)(() => {
   return {
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    gap: '10px'
-  }
-})
+    display: "flex",
+    flexDirection: "row-reverse",
+    gap: "10px",
+  };
+});
 
 const ActionButton = styled(Button)(() => {
   return {
-    height: '25px'
-  }
-})
+    height: "25px",
+  };
+});
 
 function Pointer() {
-
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = React.useState("");
 
   const { isFloating } = usePathValidate();
 
   const store = useStore();
-  const { showVotes, clearVotes, setVote } =  store.mainStore.getStore();
+  const { showVotes, clearVotes, setVote } = store.mainStore.getStore();
 
   const handlePointClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const points = (event.target as HTMLButtonElement).value;
@@ -77,35 +76,48 @@ function Pointer() {
   };
 
   const handleClearVotes = () => {
-    setSelected('');
+    setSelected("");
     clearVotes();
-  }
+  };
 
   return (
     <PointerContainer>
       <PointerHeader>
-        <Typography variant="body1">Select story worth</Typography>
+        <Typography variant="body1">Select your point</Typography>
         <PointerMenu />
       </PointerHeader>
       <PointsContainer>
         {points.map((point, index) => {
-          return <PointButton 
-                      key={index} 
-                      value={point.value}
-                      onClick={handlePointClick}
-                      color={selected === point.value && isFloating ? 'success' : 'primary'}
-                      >
-                        {point.label}
-                      </PointButton>;
+          return (
+            <PointButton
+              key={index}
+              value={point.value}
+              onClick={handlePointClick}
+              color={
+                selected === point.value && isFloating ? "success" : "primary"
+              }
+            >
+              {point.label}
+            </PointButton>
+          );
         })}
       </PointsContainer>
       <ButtonContainer>
-          <ActionButton variant="contained" size="small" color="success" onClick={showVotes}>
-            Show Votes
-          </ActionButton>
-          <ActionButton variant="outlined" size="small" onClick={handleClearVotes}>
-            Clear Votes
-          </ActionButton>
+        <ActionButton
+          variant="contained"
+          size="small"
+          color="success"
+          onClick={showVotes}
+        >
+          Show Votes
+        </ActionButton>
+        <ActionButton
+          variant="outlined"
+          size="small"
+          onClick={handleClearVotes}
+        >
+          Clear Votes
+        </ActionButton>
       </ButtonContainer>
     </PointerContainer>
   );

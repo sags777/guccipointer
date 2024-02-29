@@ -10,6 +10,13 @@ const MenuOption = styled(MenuItem)(() => {
   };
 });
 
+const PointerMenuButton = styled(IconButton)(({ theme }) => ({
+  padding: 0,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
+
 const PointerMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -33,15 +40,14 @@ const PointerMenu = () => {
 
   return (
     <>
-      <IconButton
-        sx={{ padding: 0 }}
+      <PointerMenuButton
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
         <MoreVertIcon fontSize="small" />
-      </IconButton>
+      </PointerMenuButton>
 
       <Menu
         id="basic-menu"
