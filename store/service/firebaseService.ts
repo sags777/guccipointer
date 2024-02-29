@@ -88,15 +88,28 @@ export const firebaseActions: FirebaseActions = {
     });
   },
 
-  removeUser: async (roomId: string, userId: string) => {   
-      try {
-        const database = getDatabase(firebaseApp);
-        const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
-        await remove(userRef);    
-      } catch (error) {
-        console.error("Error removing user:", error);
-        throw error;
+  removeUser: async (roomId: string, userId: string) => {
+    try {
+      const database = getDatabase(firebaseApp);
+      const roomRef = ref(database, `rooms/${roomId}/users`);
+
+      const snapshot = await get(roomRef);
+
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+
+        if (Object.keys(users).length === 1 && users[userId]) {
+          const roomToDeleteRef = ref(database, `rooms/${roomId}`);
+          await remove(roomToDeleteRef);
+        } else {
+          const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
+          await remove(userRef);
+        }
       }
+    } catch (error) {
+      console.error("Error removing user or room:", error);
+      throw error;
+    }
   },
 
   setUserPoints: async ({ userName, points, roomId }: User, userId: string) => {
