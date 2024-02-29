@@ -5,6 +5,7 @@ import PointerMenu from "./PointerMenu/PointerMenu";
 import { useStore } from "@/store/StoreProvider/StoreProvider";
 import withStore from "@/store/StoreProvider/withStore";
 import { usePathValidate } from "@/hooks/usePathValidate";
+import { calculateAveragePoints } from "@/utilities/commonUtils";
 
 const points = [
   { label: "1", value: "1" },
@@ -67,7 +68,15 @@ function Pointer() {
   const { isFloating } = usePathValidate();
 
   const store = useStore();
-  const { showVotes, clearVotes, setVote } = store.mainStore.getStore();
+  const { showVotes, clearVotes, setVote, voterData } =
+    store.mainStore.getStore();
+
+  const disableShowVotes = React.useMemo(() => {
+    return (
+      voterData.length < 2 ||
+      parseFloat(calculateAveragePoints(voterData)) === 0
+    );
+  }, [voterData]);
 
   const handlePointClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const points = (event.target as HTMLButtonElement).value;
@@ -108,6 +117,7 @@ function Pointer() {
           size="small"
           color="success"
           onClick={showVotes}
+          disabled={disableShowVotes}
         >
           Show Votes
         </ActionButton>
