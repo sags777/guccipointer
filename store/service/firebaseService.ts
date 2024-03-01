@@ -13,6 +13,7 @@ import {
   remove,
 } from "firebase/database";
 import { setUserSession } from "@/utilities/commonUtils";
+import { Updates } from "@/interfaces/Updates";
 
 export const firebaseActions: FirebaseActions = {
   setHost: async (userId: string, roomId: string) => {
@@ -42,6 +43,20 @@ export const firebaseActions: FirebaseActions = {
       }
     } catch (error) {
       return null;
+    }
+  },
+
+  removeHost: async (roomId: string) => {
+    const database = getDatabase(firebaseApp);
+    const hostRef = ref(database, `rooms/${roomId}/host`);
+
+    try {
+      const snapshot = await get(hostRef);
+      if (snapshot.exists()) {
+        await remove(hostRef);
+      }
+    } catch (error) {
+      console.log("Could not remove host", error);
     }
   },
 
@@ -91,20 +106,29 @@ export const firebaseActions: FirebaseActions = {
   removeUser: async (roomId: string, userId: string) => {
     try {
       const database = getDatabase(firebaseApp);
-      const roomRef = ref(database, `rooms/${roomId}/users`);
+      const roomRef = ref(database, `rooms/${roomId}`);
+      const usersRef = ref(database, `rooms/${roomId}/users`);
+      const usersSnapshot = await get(usersRef);
 
-      const snapshot = await get(roomRef);
+      if (!usersSnapshot.exists()) {
+        return;
+      }
 
-      if (snapshot.exists()) {
-        const users = snapshot.val();
+      const users = usersSnapshot.val();
+      const isLastUser = Object.keys(users).length === 1 && users[userId];
+      const currentHostId = await firebaseActions.getHost(roomId);
 
-        if (Object.keys(users).length === 1 && users[userId]) {
-          const roomToDeleteRef = ref(database, `rooms/${roomId}`);
-          await remove(roomToDeleteRef);
-        } else {
-          const userRef = ref(database, `rooms/${roomId}/users/${userId}`);
-          await remove(userRef);
-        }
+      const removeUpdates: Updates = {};
+
+      if (currentHostId === userId) {
+        removeUpdates["host"] = null;
+      }
+
+      if (isLastUser) {
+        await remove(roomRef);
+      } else {
+        removeUpdates[`users/${userId}`] = null;
+        await update(roomRef, removeUpdates);
       }
     } catch (error) {
       console.error("Error removing user or room:", error);
@@ -188,3 +212,4 @@ export const firebaseActions: FirebaseActions = {
     });
   },
 };
+
