@@ -17,11 +17,11 @@ interface GetMainStore {
 }
 
 class MainStore {
-  host: string = '';
-  userIds: string[] = [];
-  voterData: User[] = [];
-  service: FirebaseActions;
-  votesHidden: boolean = true;
+  private host: string = '';
+  private userIds: string[] = [];
+  private voterData: User[] = [];
+  private service: FirebaseActions;
+  private votesHidden: boolean = true;
 
 
   constructor(firebaseActions: FirebaseActions) {
@@ -29,20 +29,20 @@ class MainStore {
     this.service = firebaseActions;
   }
 
-  setVoterData(data: User[]) {
+  private setVoterData(data: User[]) {
     this.voterData = data;
   }
 
-  setUserIds(data: string[]) {
+  private setUserIds(data: string[]) {
     this.userIds = data;
   }
 
-  setVoterRoom(room: VoterRoom) {
+  private setVoterRoom(room: VoterRoom) {
     this.votesHidden = room.votesHidden ?? this.votesHidden;
     this.host = room.host ?? this.host;
   }
 
-  getData = () => {
+  private getData = () => {
     const roomId = getSessionInfo()?.roomId;
 
     if (roomId) {
@@ -68,7 +68,7 @@ class MainStore {
     }
   };
 
-  setVote = (points: string) => {
+  private setVote = (points: string) => {
     const sessionInfo = getSessionInfo();
 
     if (sessionInfo) {
@@ -86,7 +86,7 @@ class MainStore {
     }
   };
 
-  showVotes = () => {
+  private showVotes = () => {
     const roomId = getSessionInfo()?.roomId;
 
     if (roomId) {
@@ -95,7 +95,7 @@ class MainStore {
     }
   };
 
-  clearVotes = () => {
+  private clearVotes = () => {
     const roomId = getSessionInfo()?.roomId;
 
     if (roomId) {
@@ -104,7 +104,7 @@ class MainStore {
     }
   };
 
-  setHost = (userId: string) => {
+  private setHost = (userId: string) => {
     const roomId = getSessionInfo()?.roomId;
 
     if (roomId) {
@@ -112,11 +112,11 @@ class MainStore {
     }
   }
 
-  removeUser = (roomId: string, userId: string) => {
+  private removeUser = (roomId: string, userId: string) => {
     return this.service.removeUser(roomId, userId)
   }
 
-  getStore(): GetMainStore {
+  public getStore(): GetMainStore {
     return {
       host: this.host,
       votesHidden: this.votesHidden,

@@ -7,23 +7,22 @@ interface GetSignInStore {
 }
 
 class SignInStore {
-    service: FirebaseActions;
+    private service: FirebaseActions;
 
     constructor(firebaseActions: FirebaseActions) {
         makeAutoObservable(this);
         this.service = firebaseActions;
     }
 
-    signIn = (user: User): Promise<string> => {
+    private signIn = (user: User): Promise<string> => {
         return this.service.setUser(user);
     }
 
-    getStore(): GetSignInStore {
+    public getStore(): GetSignInStore {
         return {
            signIn: this.signIn,
         };
     }
-
 }
 
 export default SignInStore;
