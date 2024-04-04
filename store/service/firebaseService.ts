@@ -25,7 +25,7 @@ export const firebaseActions: FirebaseActions = {
         host: userId,
       });
     } catch (error) {
-      console.error("Failed to set host:", error);
+      throw error;
     }
   },
 
@@ -56,7 +56,7 @@ export const firebaseActions: FirebaseActions = {
         await remove(hostRef);
       }
     } catch (error) {
-      console.log("Could not remove host", error);
+      throw error;
     }
   },
 
@@ -131,7 +131,6 @@ export const firebaseActions: FirebaseActions = {
         await update(roomRef, removeUpdates);
       }
     } catch (error) {
-      console.error("Error removing user or room:", error);
       throw error;
     }
   },
@@ -145,7 +144,6 @@ export const firebaseActions: FirebaseActions = {
         points: points,
       });
     } catch (error) {
-      console.error("Error setting user:", error);
       throw error;
     }
   },
@@ -161,7 +159,6 @@ export const firebaseActions: FirebaseActions = {
         callback(data);
       },
       (error) => {
-        console.error("Error fetching data:", error);
         throw error;
       }
     );
@@ -177,7 +174,6 @@ export const firebaseActions: FirebaseActions = {
         votesHidden: votesHidden,
       });
     } catch (error) {
-      console.error("Failed to update showVotes:", error);
       throw error;
     }
   },
@@ -206,7 +202,6 @@ export const firebaseActions: FirebaseActions = {
           points: "",
         });
       } catch (error) {
-        console.error(`Failed to clear votes for user ${userId}:`, error);
         throw error;
       }
     });

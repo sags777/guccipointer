@@ -1,12 +1,18 @@
 import { useStore } from "@/store/StoreProvider/StoreProvider";
 import { getSessionInfo } from "@/utilities/commonUtils";
 import { useCallback } from "react";
+import { usePathValidate } from "./usePathValidate";
 
 export const useOnTabClose = () => {
   const store = useStore();
-  const { host, removeUser } = store.mainStore.getStore();
+  const { removeUser } = store.mainStore.getStore();
+  const { isFloating } = usePathValidate();
 
   const removeUserFromSession = useCallback(() => {
+    if (isFloating) {
+      return;
+    }
+
     const handleTabClose = async () => {
       const roomId = getSessionInfo()?.roomId;
       const userId = getSessionInfo()?.userId;
@@ -15,7 +21,7 @@ export const useOnTabClose = () => {
         try {
           removeUser(roomId, userId);
         } catch (error) {
-          console.error("Error removing user on tab close:", error);
+          throw error;
         }
         sessionStorage.removeItem("pointerSession");
       }
@@ -24,7 +30,7 @@ export const useOnTabClose = () => {
     window.addEventListener("beforeunload", handleTabClose);
 
     return () => window.removeEventListener("beforeunload", handleTabClose);
-  }, [removeUser]);
+  }, [isFloating, removeUser]);
 
   return removeUserFromSession;
 };
