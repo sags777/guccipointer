@@ -1,11 +1,11 @@
-import { usePathValidate } from "@/hooks/usePathValidate";
-import { useStore } from "@/store/StoreProvider/StoreProvider";
-import withStore from "@/store/StoreProvider/withStore";
-import { calculateAveragePoints } from "@/utilities/commonUtils";
 import { Box, Button, Typography, styled } from "@mui/material";
 import React from "react";
 import PointButton from "./PointButton/PointButton";
 import PointerMenu from "./PointerMenu/PointerMenu";
+import { useStore } from "@/store/StoreProvider/StoreProvider";
+import withStore from "@/store/StoreProvider/withStore";
+import { usePathValidate } from "@/hooks/usePathValidate";
+import { calculateAveragePoints } from "@/utilities/commonUtils";
 
 const points = [
   { label: "1", value: "1" },
