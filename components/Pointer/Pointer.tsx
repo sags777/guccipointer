@@ -53,6 +53,7 @@ const ButtonContainer = styled(Box)(() => {
     display: "flex",
     flexDirection: "row-reverse",
     gap: "10px",
+    flexWrap: "wrap",
   };
 });
 
