@@ -12,9 +12,6 @@ const MenuOption = styled(MenuItem)(() => {
 
 const PointerMenuButton = styled(IconButton)(({ theme }) => ({
   padding: 0,
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
 }));
 
 const PointerMenu = () => {
